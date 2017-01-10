@@ -27,24 +27,47 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('pause',function(){var receivedElement = document.querySelector('.received');
+            receivedElement.innerHTML='pause';}, false);
+        document.addEventListener('resume',function(){
+            var receivedElement = document.querySelector('.received');
+            receivedElement.innerHTML='resume';}, false);
+        document.addEventListener('backbutton',this.domevent, false);
+        document.addEventListener('batterystatus',this.batterystatus, false);
+
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        app.receivedEvent1('deviceready');
+        navigator.accelerometer.getCurrentAcceleration(function(position){
+            var receivedElement = document.querySelector('.received');
+            receivedElement.innerHTML=position.x+"--"+position.y+"--"+position.timestamp+"--";
+        });
+
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    receivedEvent1: function(id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
+        var x=parentElement.querySelector('.battery');
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
+        receivedElement.innerHTML+=' -- '+ id;
         console.log('Received Event: ' + id);
+        x.innerHTML="network type: " +navigator.network.connection.type;
+    },
+    domevent:function(e){
+        var receivedElement = document.querySelector('.received');
+        receivedElement.innerHTML='click back button--'+e;
+    },
+
+    batterystatus:function(e){
+        var receivedElement = document.querySelector('.battery');
+        receivedElement.innerHTML='battery changes';
     }
 };
 

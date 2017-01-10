@@ -91,7 +91,10 @@ h1 {
     background-color:#333333;
     display:block;
 }
-
+.event.battery {
+    background-color:#4B946A;
+    display:block;
+}
 .event.received {
     background-color:#4B946A;
     display:none;
@@ -112,4 +115,7 @@ h1 {
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
+}
+.none{
+    display: none;
 }
